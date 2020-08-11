@@ -3,8 +3,8 @@
 #include <stdio.h> // Standard input/output definitions
 #include "position_controller.h"
 
-#define PORT "/dev/ttyS1" //The port name
-#define BAUD 57600        //Baudrate
+#define PORT "/dev/ttyUSB0"  //The port name
+#define BAUD 921600          //Baudrate
 
 void new_msg_callback(mavlink_message_t message)
 {
@@ -39,21 +39,21 @@ int main()
     Position_Controller p(&mti);
 
     // Initial position
-    //int x = 0;
-    //int y = 0;
-    //int z = 5;
+    int x = 0;
+    int y = 0;
+    int z = 5;
 
     // Upload current position before switching to offboard mode
-    /*for (int ind = 0; ind < 200; ind++)
+    for (int ind = 0; ind < 200; ind++)
     {   
         p.update_current_position(x, y, z, 0);
         chrono::milliseconds k(100);
         this_thread::sleep_for(k);
         cout << "." << flush;
-    }*/
+    }
 
     // Switch to offboard control mode
-    //p.toggle_offboard_control(true);
+    p.toggle_offboard_control(true);
 
     mti.bind_new_msg_callback(new_msg_callback);
     cout << "Bound Message CallBack" << endl;
@@ -64,16 +64,15 @@ int main()
     //                     desired position at   1Hz
     //                     current attitude at   1Hz     
     
-    //int count1 = 0; int count2 = 0;
-    //int i = 0; int j = 0;
+    int count1 = 0; int count2 = 0;
+    int i = 0; int j = 0;
     mavlink_scaled_imu_t imu_info;
 
-    //while (i < 10)
-    while(1)
+    while (i < 10)
     {
         
-        //count1++;
-	//count2++;
+        count1++;
+	count2++;
 	
 	p.getIMU(&imu_info);
 	printf("[Time] = [%d] \n", imu_info.time_boot_ms);
@@ -81,7 +80,7 @@ int main()
 	printf("[gyrox gyroy gyroz] = [%d %d %d] \n", imu_info.xgyro, imu_info.ygyro, imu_info.zgyro);
 	printf("*****************************************************************************\n");
 	
-	/*if (count1 == 20)
+	if (count1 == 20)
         {
 	    count1 = 0;  
 	    i++;
@@ -96,14 +95,14 @@ int main()
             cout << "Updated Desired Position " << endl;
             p.update_desired_position(x + i * 5, y + i * 5, z + i * 5, 0);
             decode_last_attitude_msg(&mti);
-        }*/
+        }
         
         chrono::milliseconds j(5);
         this_thread::sleep_for(j); //200Hz
     }
 
     // Cancel offboard mode
-    //p.toggle_offboard_control(false);
+    p.toggle_offboard_control(false);
     p.shutdown();
     return 0;
 }
