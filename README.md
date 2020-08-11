@@ -7,16 +7,16 @@ The supported function are as follows:
 * Update the attitude
 * Update the IMU data
 
-Please check the example for method of usage.
+Please check the example in main.cpp for the offboard control of a drone using external available position.
 
 ## Setting up
 ```
 git clone https://github.com/HMchuang/mavlink_application.git
-cd mavlink-interface
+cd mavlink_application
 git submodule init
 git submodule update
 ```
-## Setting up the PX4 Compatible Board
+## Setting up the PX4 compatible board
 
 Build the regular release of px4. (https://dev.px4.io/en/setup/building_px4.html) and upload it. Or try to install the latest version available on QGroundControl.
 
